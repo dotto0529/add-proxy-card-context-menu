@@ -6,7 +6,8 @@
     "service_worker": "js/background.js"
   },
   "host_permissions": [
-    "https://www.onepiece-cardgame.com/"
+    "https://www.onepiece-cardgame.com/",
+    "https://digimoncard.com/"
   ],
   "content_scripts": [
     {
