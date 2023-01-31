@@ -26,7 +26,7 @@ const updateContextMenus = async () => {
   chrome.contextMenus.create({
       id: "add-card",
       title: "画像をプロキシカード印刷に追加",
-      contexts: ["all"]
+      contexts: ["image"]
   });
 };
 
@@ -36,9 +36,9 @@ chrome.runtime.onStartup.addListener(updateContextMenus);
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   switch (info.menuItemId) {
     case "add-card":
-      const isExist = false;
+      let isExist = false;
       chrome.tabs.query({ currentWindow: true })
-      .then(tabs => {
+      .then(async tabs => {
         tabs.forEach(tab => {
           if ('https://proxy-card.imasanari.dev/' === tab.url) {
             chrome.tabs.sendMessage(tab.id, info.srcUrl);
@@ -46,11 +46,12 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
             return;
           }
         });
-        // if (!isExist) {
-        //   chrome.tabs.create({ url: 'https://proxy-card.imasanari.dev/' });
-        //   chrome.tabs.sendMessage(tab.id, info.srcUrl);
-        //   return;
-        // }
+        if (!isExist) {
+          chrome.storage.local.set({'image_url': info.srcUrl});
+          const tab = await chrome.tabs.create({ url: 'https://proxy-card.imasanari.dev/' });
+          //chrome.tabs.sendMessage(tab.id, info.srcUrl);
+          return;
+        }
       });
       break;
   }
