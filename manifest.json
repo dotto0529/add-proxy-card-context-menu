@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "[画像をプロキシカード印刷に追加]メニュー追加",
+  "version": "1.0",
+  "background": {
+    "service_worker": "js/background.js"
+  },
+  "host_permissions": [
+    "https://www.onepiece-cardgame.com/"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://proxy-card.imasanari.dev/"],
+      "run_at": "document_end",
+      "js": [
+        "js/jquery-3.6.3.min.js",
+        "js/script.js"
+      ]
+    }
+  ],
+  "permissions": [
+    "activeTab",
+    "contextMenus",
+    "clipboardWrite",
+    "scripting",
+    "tabs",
+    "storage",
+    "background"
+  ]
+}
